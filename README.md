@@ -50,6 +50,10 @@ Open the [live prototype](https://dineshdhanoki.github.io/nexusvault-rag/) and t
 - **Read the audit trail** — see how answers, syncs, and blocked requests could become legible events.
 - **Explore the team workspace** — make roles and collection visibility understandable to humans.
 
+![NexusVault prototype with the Ask Nexus workspace, sample question prompts, an answer overview, and recent questions](docs/assets/nexusvault-demo.png)
+
+*The screenshot shows the published prototype’s current interface. Its HTML, styles, and JavaScript were checked against GitHub Pages on 15 November 2026.*
+
 The prototype is intentionally dependency-free. There is no API key, database, package manager, or account required to experience the idea.
 
 ## The honest boundary
@@ -151,6 +155,10 @@ python3 -m http.server 8000
 ```
 
 Then open <http://127.0.0.1:8000>.
+
+### Browser verification
+
+The local demo was rendered and visually checked in Google Chrome 157.0.8103.51 on macOS on 15 November 2026. This is the only browser/version verified so far; other browsers, mobile layouts, and assistive technologies have not been checked. The demo is dependency-free static HTML, CSS, and JavaScript, but compatibility beyond this verified environment is not yet claimed.
 
 To run the local reference service and its tests (Python 3.12, standard library only):
 
