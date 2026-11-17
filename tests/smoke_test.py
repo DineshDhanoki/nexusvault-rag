@@ -41,3 +41,16 @@ assert "good first issue" in readme
 assert "github.io/nexusvault-rag" in readme
 
 print(f"smoke checks passed ({len(required)} required files, {len(html)} HTML characters)")
+
+# Persona menu keyboard contract. The real behavior (Tab closes the menu and
+# moves focus forward, Escape restores the trigger, one roving tab stop) was
+# checked in Chromium; these keep the dependency-free CI from losing it.
+assert 'aria-haspopup="menu"' in html
+assert 'role="menuitemradio"' in html
+assert html.count('role="menuitemradio"') == 4
+assert html.count('tabindex="-1" data-role=') == 3
+assert 'tabindex="0" data-role=' in html
+assert "function setRoleTabStop" in app
+assert "if(e.key==='Tab')" in app
+assert "setRoleMenuOpen(false);roleButton.focus()" in app
+assert "next?.focus()" in app
