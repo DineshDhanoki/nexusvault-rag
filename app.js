@@ -6,10 +6,17 @@ function showView(view){views.forEach(v=>document.getElementById(`${v}-view`).cl
 navItems.forEach(item=>item.addEventListener('click',()=>showView(item.dataset.view)));
 document.querySelectorAll('[data-view]').forEach(item=>{if(!item.classList.contains('nav-item'))item.addEventListener('click',()=>showView(item.dataset.view))});
 const roleButton=document.getElementById('role-button'), roleMenu=document.getElementById('role-menu'), roleName=document.getElementById('role-name');
-roleButton.addEventListener('click',()=>roleMenu.classList.toggle('open'));
 const roleLabels={admin:'Amara · Admin',engineering:'Leo · Engineering',finance:'Mina · Finance',people:'Jules · People ops'};
-document.querySelectorAll('[data-role]').forEach(btn=>btn.addEventListener('click',()=>{roleName.textContent=roleLabels[btn.dataset.role];roleMenu.classList.remove('open');showToast(`Previewing persona ${roleLabels[btn.dataset.role]} · access is not enforced`)}));
-document.addEventListener('click',e=>{if(!e.target.closest('.role-control'))roleMenu.classList.remove('open')});
+const roleItems=Array.from(roleMenu.querySelectorAll('[data-role]'));
+function roleTabStop(){return roleItems.find(item=>item.getAttribute('aria-checked')==='true')||roleItems[0]}
+function setRoleTabStop(active){roleItems.forEach(item=>{item.tabIndex=item===active?0:-1})}
+function nextFocusable(el){const all=Array.from(document.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')).filter(node=>node.tabIndex>=0&&!node.disabled&&!roleMenu.contains(node));return all[all.indexOf(el)+1]}
+function setRoleMenuOpen(open,{focusChoice=false,returnFocus=false}={}){roleMenu.classList.toggle('open',open);roleButton.setAttribute('aria-expanded',open?'true':'false');if(open&&focusChoice){const selected=roleTabStop();setRoleTabStop(selected);selected?.focus()}else if(!open){setRoleTabStop(roleTabStop());if(returnFocus)roleButton.focus()}}
+roleButton.addEventListener('click',()=>{const open=roleButton.getAttribute('aria-expanded')!=='true';setRoleMenuOpen(open,{focusChoice:open})});
+roleMenu.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();setRoleMenuOpen(false,{returnFocus:true});return}if(e.key==='Tab'){e.preventDefault();if(e.shiftKey){setRoleMenuOpen(false);roleButton.focus()}else{const next=nextFocusable(roleButton);setRoleMenuOpen(false);next?.focus()}return}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const index=roleItems.indexOf(document.activeElement),next=(index+(e.key==='ArrowDown'?1:-1)+roleItems.length)%roleItems.length;setRoleTabStop(roleItems[next]);roleItems[next].focus()}});
+roleItems.forEach(btn=>btn.addEventListener('click',()=>{roleItems.forEach(item=>item.setAttribute('aria-checked',String(item===btn)));roleName.textContent=roleLabels[btn.dataset.role];setRoleMenuOpen(false,{returnFocus:true});showToast(`Previewing persona ${roleLabels[btn.dataset.role]} · access is not enforced`)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&roleMenu.classList.contains('open'))setRoleMenuOpen(false,{returnFocus:true})});
+document.addEventListener('click',e=>{if(!e.target.closest('.role-control'))setRoleMenuOpen(false)});
 const input=document.getElementById('query-input'), answerArea=document.getElementById('answer-area'), askButton=document.getElementById('ask-button');
 const questions={
  'What changed in the FY26 hiring plan?':{title:'FY26 hiring plan: three changes to know',copy:'The plan moves 12 roles from Q2 to Q3, adds a dedicated security hiring pod, and holds non-critical backfills until the operating review. The updated plan is owned by People Ops and Finance.',docs:['FY26 operating plan · v3','Hiring plan notes · Sep 24','Operating review agenda']},
