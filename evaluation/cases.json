@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "engineering-handbook-allowed",
+      "question": "How does engineering handle code reviews?",
+      "persona_id": "engineering",
+      "allowed_roles": ["engineering"],
+      "allowed_source_ids": ["doc-eng-handbook"],
+      "expected_source_ids": ["doc-eng-handbook"],
+      "expected_answer": {
+        "refused": false,
+        "required_terms": ["documented code reviews"]
+      }
+    },
+    {
+      "id": "finance-forecast-allowed",
+      "question": "What does the finance forecast say?",
+      "persona_id": "finance",
+      "allowed_roles": ["finance"],
+      "allowed_source_ids": ["doc-finance-forecast"],
+      "expected_source_ids": ["doc-finance-forecast"],
+      "expected_answer": {
+        "refused": false,
+        "required_terms": ["illustrative and fictional"]
+      }
+    },
+    {
+      "id": "finance-forecast-denied-to-engineering",
+      "question": "What does the finance forecast say?",
+      "persona_id": "engineering",
+      "allowed_roles": ["finance"],
+      "allowed_source_ids": [],
+      "expected_source_ids": [],
+      "expected_answer": {
+        "refused": true,
+        "required_terms": ["cannot answer"]
+      }
+    }
+  ]
+}

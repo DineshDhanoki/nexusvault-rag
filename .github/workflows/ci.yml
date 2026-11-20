@@ -28,6 +28,8 @@ jobs:
         run: python3 tests/smoke_test.py
       - name: Run local reference service unit tests
         run: python -m unittest discover -s tests -v
+      - name: Run deterministic RAG evaluation
+        run: python -m reference_service.evaluation --json-report /tmp/nexusvault-evaluation.json
       - name: Validate HTML
         run: npx --yes html-validate@9 index.html
       - name: Check repository governance files
