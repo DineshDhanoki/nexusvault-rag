@@ -34,6 +34,7 @@ The response is intentionally a skeleton: `answer` is null and `sources` is empt
 - `contracts.py`: validated request data contract.
 - `service.py`: application boundary that later policy and retrieval components will implement behind.
 - `server.py`: standard-library HTTP adapter; it does not make authorization decisions.
+- `evaluation.py`: offline evaluator and evaluation-only fake target; it is not called by the service.
 
 The three personas—Engineering, Finance, and People Ops—are fake local test identities. Document audience metadata exists to make allowed/denied fixture cases explicit for tests; it is not enforced by this skeleton.
 

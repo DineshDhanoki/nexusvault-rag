@@ -25,8 +25,12 @@ Then open <http://127.0.0.1:8000>.
 
 ```bash
 python3 tests/smoke_test.py
+python3.12 -m unittest discover -s tests -v
+python3.12 -m reference_service.evaluation
 node --check app.js
 ```
+
+Evaluation regressions live in `evaluation/cases.json`. Use only synthetic data and follow [the evaluation guide](docs/evaluation.md) when adding allowed, denied, source, citation, or answer-property cases.
 
 If you change interaction behavior, test keyboard navigation and a narrow viewport manually. If you change the permission model, include denied and allowed cases in the issue or PR description.
 

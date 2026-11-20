@@ -70,7 +70,7 @@ The current roles, answers, documents, and policy states are local demo data. Th
 | Retrieval | Deterministic local responses | Permission-aware hybrid retrieval |
 | Sources | Illustrative collections | Ingestion, chunking, checksums, provenance |
 | Audit | Readable demo events | Privacy-safe append-only audit trail |
-| Evaluation | Roadmap | Reproducible allowed/denied/citation cases |
+| Evaluation | Deterministic local fake-target harness | Connect cases to the policy-aware service |
 
 Being explicit about this boundary is part of the project’s security culture.
 
@@ -169,11 +169,21 @@ python3.12 -m reference_service.server
 
 The service listens only on `127.0.0.1:8001`. Its three personas and documents are fake; no authorization or retrieval is active. See [the service guide](docs/reference-service.md) for the request contract and limitations.
 
+To run the offline RAG evaluation harness and write a machine-readable report:
+
+```bash
+python3.12 -m reference_service.evaluation \
+  --json-report .local/evaluation-report.json
+```
+
+See [the evaluation guide](docs/evaluation.md) for the case format, checks, and trust boundary. The harness exercises an evaluation-only fake target; it does not claim that the reference service currently enforces authorization.
+
 Before opening a pull request:
 
 ```bash
 python3 tests/smoke_test.py
 python3.12 -m unittest discover -s tests -v
+python3.12 -m reference_service.evaluation
 node --check app.js
 ```
 
